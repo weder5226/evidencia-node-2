@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id            Int            @id @default(autoincrement())
+  name          String         @unique @db.VarChar(50)
+  quantityStock Int            @map("quantity_stock")
+  version       Int            @default(0) @db.SmallInt
+  productDetail ProductDetail?
+
+  @@map("products")
+}
+
+model ProductDetail {
+  productId   Int     @id @map("product_id")
+  imageUrl    String  @map("image_url") @db.VarChar(500)
+  imageAlt    String  @map("image_alt") @db.VarChar(100)
+  imageUrl2   String  @map("image_url_2") @db.VarChar(500)
+  imageAlt2   String  @map("image_alt_2") @db.VarChar(100)
+  imageUrl3   String  @map("image_url_3") @db.VarChar(500)
+  imageAlt3   String  @map("image_alt_3") @db.VarChar(100)
+  detail      String  @db.VarChar(250)
+  description String  @db.VarChar(700)
+  ingredients String  @db.VarChar(200)
+  category    String  @db.VarChar(80)
+  price       Decimal @db.Decimal(10, 2)
+  isHidden    Boolean @map("is_hidden")
+  product     Product @relation(fields: [productId], references: [id])
+
+  @@map("product_details")
+}
+
+model Supervisor {
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(100)
+  email     String  @unique @db.VarChar(80)
+  password  String  @db.VarChar(100)
+  role      String  @db.VarChar(30)
+  isEnabled Boolean @map("is_enabled")
+  version   Int     @default(0) @db.SmallInt
+
+  @@map("supervisors")
+}
