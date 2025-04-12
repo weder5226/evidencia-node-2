@@ -9,15 +9,19 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/common/guard/auth.guard';
 import { PositiveIntPipe } from 'src/common/pipe/positive-int.pipe';
 import { CreateProductDto } from './dto/body/create-product.dto';
 import { UpdateProductDto } from './dto/body/update-product.dto';
 import { GetAllProductDto } from './dto/query/get-all-product.dto';
 import { ProductService } from './product.service';
 
+@ApiBearerAuth()
 @ApiTags('Product')
+@UseGuards(AuthGuard)
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}

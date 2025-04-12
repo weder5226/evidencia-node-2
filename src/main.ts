@@ -19,6 +19,13 @@ async function bootstrap() {
     .setTitle('Evidencia Node 2')
     .setDescription('Avance de proyecto de sistema de ventas')
     .setVersion('1.0')
+    .addBearerAuth({
+      name: 'Security Token',
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      in: 'header',
+    })
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, documentFactory);
