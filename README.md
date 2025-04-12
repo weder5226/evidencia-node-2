@@ -30,8 +30,8 @@ Debes tener un servidor PostgreSQL activo. Puedes usar uno local o remoto, mient
 ### 2. Clona el repositorio
 
 ```bash
-git clone <REPO_URL>
-cd <nombre-del-proyecto>
+git clone https://github.com/weder5226/evidencia-node-2
+cd evidencia-node-2
 ```
 
 ### 3. Instala las dependencias
