@@ -12,7 +12,6 @@ export class GenericExceptionFilter implements ExceptionFilter {
     const title = HttpStatus[status].replaceAll('_', ' ');
     const detail = 'An unexpected internal server error occurred';
 
-    console.log(exception.name, exception.message, typeof exception);
     response.status(status).send({
       title,
       status,

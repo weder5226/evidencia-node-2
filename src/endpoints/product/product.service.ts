@@ -3,6 +3,7 @@ import { Prisma } from 'generated/prisma';
 import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library';
 import { DatabaseService } from 'src/database/database.service';
 import { DuplicateException } from 'src/exception/duplicate.exception';
+import { cleanNullFieldObj } from 'src/util/clean-null-field-obj';
 import { CreateProductDto } from './dto/body/create-product.dto';
 import { UpdateProductDto } from './dto/body/update-product.dto';
 
@@ -55,9 +56,11 @@ export class ProductService {
   }
 
   async updateById(id: number, updateProductDto: UpdateProductDto) {
-    const { name, quantityStock } = updateProductDto;
+    const { name, quantityStock } = cleanNullFieldObj(updateProductDto);
+
     const p = await this.db.product.findUnique({
       where: { id },
+      select: { name: true, version: true },
     });
 
     if (p == null) {
@@ -70,11 +73,7 @@ export class ProductService {
     const product = await this.db.product
       .update({
         where: { id, version: p.version },
-        data: {
-          name: name ?? undefined,
-          quantityStock: quantityStock ?? undefined,
-          version: { increment: 1 },
-        },
+        data: { name, quantityStock, version: { increment: 1 } },
         omit: { version: true },
       })
       .catch((e) => {
@@ -90,13 +89,12 @@ export class ProductService {
   }
 
   async deleteById(id: number) {
-    const product = await this.db.product.findUnique({
-      where: { id },
-      select: { id: true },
+    await this.db.product.delete({ where: { id } }).catch((e) => {
+      if (e instanceof PrismaClientKnownRequestError && e.code === 'P2025') {
+        throw new NotFoundException('Product with the given ID does not exist');
+      }
+      throw e;
     });
-    if (product == null) throw new NotFoundException('Product with the given ID does not exist');
-
-    await this.db.product.delete({ where: { id } });
   }
 
   private async existsByNameIgnoreCase(name: string) {
