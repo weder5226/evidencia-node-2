@@ -1,98 +1,89 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🛒 Proyecto Sistema de Ventas — Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este es un backend avanzado para un sistema de ventas, construido con **Node.js** usando el potente framework **NestJS** y **Prisma** como ORM para conectarse a una base de datos **PostgreSQL**.  
+Incluye los módulos de:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- Productos
+- Detalles de productos
+- Inicio de sesión y autenticación con tokens
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ⚙️ Requisitos
 
-## Project setup
+Asegúrate de tener las siguientes versiones o superiores instaladas:
 
-```bash
-$ npm install
-```
+- **Node.js** `v22.x`
+- **npm** `v11.x`
+- **PostgreSQL** `v16.x`
 
-## Compile and run the project
+---
+
+## 🚀 Instalación y ejecución
+
+Sigue estos pasos para levantar el proyecto:
+
+### 1. Asegúrate de tener PostgreSQL corriendo
+
+Debes tener un servidor PostgreSQL activo. Puedes usar uno local o remoto, mientras tengas acceso con una URL válida.
+
+### 2. Clona el repositorio
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone <REPO_URL>
+cd <nombre-del-proyecto>
 ```
 
-## Run tests
+### 3. Instala las dependencias
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+### 4. Crea el archivo .env
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+En la raíz del proyecto, crea un archivo .env con el siguiente contenido (Reemplazando _usuario, contraseña, nombre_basedatos y tu_clave_secreta_segura_):
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```env
+DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/nombre_basedatos
+TOKEN_SECRET=tu_clave_secreta_segura
+```
+
+### 5. Ejecuta la migración inicial de la base de datos
+
+Esto generará las tablas necesarias y el cliente Prisma:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm run db:migrate
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 6. Levanta el servidor
 
-## Resources
+```bash
+npm run dev
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+Esto inicia el servidor NestJS en el puerto 8080 por defecto.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 7. Abre la documentación Swagger
 
-## Support
+Dirígete en tu navegador a: http://localhost:8080
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Serás redirigido automáticamente a la interfaz Swagger, donde puedes explorar y probar todos los endpoints.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 🔐 Autenticación
 
-## License
+- Registra un nuevo usuario usando el endpoint correspondiente.
+- Haz login con las credenciales registradas.
+- Swagger te devolverá un token.
+- Pega ese token en el botón "Authorize" de la interfaz de Swagger para habilitar las rutas protegidas.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## 🧪 Módulos actuales
+
+- Productos: creación, consulta paginada, actualización, eliminación.
+- Detalle de productos: creación, actualización, consulta paginada, eliminación.
+- Autenticación: registro y login
