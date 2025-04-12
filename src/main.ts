@@ -1,11 +1,19 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+import { DatabaseExceptionFilter } from './exception/filter/database-exception.filter';
+import { GenericExceptionFilter } from './exception/filter/generic-exception.filter';
+import { HttpExceptionFilter } from './exception/filter/http-exception.filter';
 
 async function bootstrap() {
   const logger = new Logger('Main');
   const app = await NestFactory.create(AppModule);
+  app.useGlobalFilters(
+    new GenericExceptionFilter(),
+    new HttpExceptionFilter(),
+    new DatabaseExceptionFilter(),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Evidencia Node 2')
@@ -18,7 +26,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      transform: true,
+      // transform: true,
     }),
   );
 

@@ -1,19 +1,23 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PositiveIntPipe } from 'src/common/pipe/positive-int.pipe';
+import { CreateProductDto } from './dto/body/create-product.dto';
+import { UpdateProductDto } from './dto/body/update-product.dto';
+import { GetAllProductDto } from './dto/query/get-all-product.dto';
 import { ProductService } from './product.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('Product')
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -21,15 +25,16 @@ export class ProductController {
   @ApiOperation({ summary: 'Get Product By ID' })
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getById(@Param('id') id: string) {
-    return this.productService.getById(+id);
+  async getById(@Param('id', PositiveIntPipe) id: number) {
+    return await this.productService.getById(id);
   }
 
   @ApiOperation({ summary: 'Get All Products' })
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllByHasStock() {
-    return this.productService.getAllByHasStock();
+  async getAllByHasStock(@Query() query: GetAllProductDto) {
+    const { page = 1, size = 20, available = true } = query;
+    return await this.productService.getAllByHasStock(page, size, available);
   }
 
   @ApiOperation({ summary: 'Create Product' })
@@ -42,14 +47,17 @@ export class ProductController {
   @ApiOperation({ summary: 'Update Product By ID' })
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  updateById(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.updateById(+id, updateProductDto);
+  async updateById(
+    @Param('id', PositiveIntPipe) id: number,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    return await this.productService.updateById(id, updateProductDto);
   }
 
   @ApiOperation({ summary: 'Delete Product By ID' })
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteById(@Param('id') id: string) {
-    return this.productService.deleteById(+id);
+  async deleteById(@Param('id', PositiveIntPipe) id: number) {
+    return await this.productService.deleteById(id);
   }
 }

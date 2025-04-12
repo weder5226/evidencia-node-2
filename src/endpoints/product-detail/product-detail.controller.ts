@@ -12,8 +12,9 @@ import {
 import { ProductDetailService } from './product-detail.service';
 import { CreateProductDetailDto } from './dto/create-product-detail.dto';
 import { UpdateProductDetailDto } from './dto/update-product-detail.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Catalog')
 @Controller('product-detail')
 export class ProductDetailController {
   constructor(private readonly productDetailService: ProductDetailService) {}
